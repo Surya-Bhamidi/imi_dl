@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPEA Property Predictor — Multi-Output DL Regression</title>
+    <meta name="description" content="Deep Learning multi-output regression framework for predicting mechanical properties of Multi-Principal Element Alloys">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a3e;
+            --bg-card: rgba(30, 30, 72, 0.6);
+            --bg-glass: rgba(255, 255, 255, 0.04);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent-1: #6366f1;
+            --accent-2: #ec4899;
+            --accent-3: #14b8a6;
+            --accent-4: #f59e0b;
+            --accent-5: #8b5cf6;
+            --gradient-1: linear-gradient(135deg, #6366f1, #8b5cf6);
+            --gradient-2: linear-gradient(135deg, #ec4899, #f43f5e);
+            --gradient-hero: linear-gradient(135deg, #0f0f23 0%, #1e1e4a 50%, #0f0f23 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(236, 72, 153, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(20, 184, 166, 0.04) 0%, transparent 50%);
+            z-index: -1;
+            animation: bgPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            padding: 32px 0 16px;
+            text-align: center;
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gradient-1);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e2e8f0, #6366f1, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Cards */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title .icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* Element Grid */
+        .element-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .element-input {
+            position: relative;
+        }
+
+        .element-input label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .element-input input {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .element-input input:focus {
+            border-color: var(--accent-1);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .element-input input:not(:placeholder-shown) {
+            border-color: var(--accent-3);
+            background: rgba(20, 184, 166, 0.05);
+        }
+
+        /* Select & Other Inputs */
+        .params-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+        }
+
+        .param-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .param-group select,
+        .param-group input {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+            appearance: none;
+        }
+
+        .param-group select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 5h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 32px;
+        }
+
+        .param-group select option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .param-group select:focus,
+        .param-group input:focus {
+            border-color: var(--accent-1);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        /* Predict Button */
+        .predict-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .predict-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .predict-btn:hover::before {
+            left: 100%;
+        }
+
+        .predict-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
+        }
+
+        .predict-btn:active {
+            transform: translateY(0);
+        }
+
+        .predict-btn.loading {
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        /* Results Section */
+        .results-section {
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .formula-display {
+            text-align: center;
+            padding: 12px 20px;
+            background: var(--bg-glass);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .formula-display strong {
+            color: var(--accent-3);
+            font-size: 16px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .result-card {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .result-card:nth-child(1)::before { background: var(--accent-1); }
+        .result-card:nth-child(2)::before { background: var(--accent-2); }
+        .result-card:nth-child(3)::before { background: var(--accent-3); }
+        .result-card:nth-child(4)::before { background: var(--accent-4); }
+        .result-card:nth-child(5)::before { background: var(--accent-5); }
+
+        .result-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .result-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e2e8f0, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-unit {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Quick Presets */
+        .presets {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .preset-btn {
+            padding: 6px 14px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .preset-btn:hover {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: var(--accent-1);
+            color: var(--text-primary);
+        }
+
+        /* Error */
+        .error-msg {
+            display: none;
+            padding: 12px 16px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            color: #fca5a5;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .error-msg.visible {
+            display: block;
+            animation: slideUp 0.3s ease;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 32px 0;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .element-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-badge">🧪 Deep Learning</div>
+            <h1>MPEA Property Predictor</h1>
+            <p class="subtitle">Multi-output regression framework for simultaneous prediction of mechanical properties from alloy compositions</p>
+        </header>
+
+        <!-- Quick Presets -->
+        <div class="glass-card">
+            <div class="card-title">
+                <div class="icon" style="background: rgba(99,102,241,0.15); color: var(--accent-1);">⚡</div>
+                Quick Presets
+            </div>
+            <div class="presets">
+                <button class="preset-btn" onclick="loadPreset('cantor')">CoCrFeMnNi (Cantor)</button>
+                <button class="preset-btn" onclick="loadPreset('alcocr')">AlCoCrFeNi</button>
+                <button class="preset-btn" onclick="loadPreset('refractory')">HfNbTaTiZr</button>
+                <button class="preset-btn" onclick="loadPreset('light')">AlNbTiV</button>
+                <button class="preset-btn" onclick="loadPreset('fcc')">CoCrFeNi</button>
+            </div>
+        </div>
+
+        <!-- Element Composition -->
+        <div class="glass-card">
+            <div class="card-title">
+                <div class="icon" style="background: rgba(20,184,166,0.15); color: var(--accent-3);">⚛</div>
+                Alloy Composition (Atomic Ratios)
+            </div>
+            <div class="element-grid" id="elementGrid">
+            </div>
+        </div>
+
+        <!-- Parameters -->
+        <div class="glass-card">
+            <div class="card-title">
+                <div class="icon" style="background: rgba(236,72,153,0.15); color: var(--accent-2);">⚙</div>
+                Processing Parameters
+            </div>
+            <div class="params-grid">
+                <div class="param-group">
+                    <label>Processing Method</label>
+                    <select id="processing">
+                        <option value="CAST">Cast</option>
+                        <option value="WROUGHT">Wrought</option>
+                        <option value="ANNEAL">Anneal</option>
+                        <option value="POWDER">Powder</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                </div>
+                <div class="param-group">
+                    <label>Microstructure</label>
+                    <select id="microstructure">
+                        <option value="FCC">FCC</option>
+                        <option value="BCC">BCC</option>
+                        <option value="FCC+BCC">FCC+BCC</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="param-group">
+                    <label>Crystal Structure</label>
+                    <select id="bcc_fcc">
+                        <option value="FCC">FCC</option>
+                        <option value="BCC">BCC</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="param-group">
+                    <label>Grain Size (μm)</label>
+                    <input type="number" id="grain_size" placeholder="e.g. 100" step="any" min="0">
+                </div>
+                <div class="param-group">
+                    <label>Density (g/cm³)</label>
+                    <input type="number" id="density" placeholder="e.g. 8.0" step="any" min="0">
+                </div>
+                <div class="param-group">
+                    <label>Test Temperature (°C)</label>
+                    <input type="number" id="test_temp" value="25" step="any">
+                </div>
+            </div>
+        </div>
+
+        <!-- Predict Button -->
+        <button class="predict-btn" id="predictBtn" onclick="predict()">
+            🔮 Predict Mechanical Properties
+        </button>
+
+        <!-- Error Message -->
+        <div class="error-msg" id="errorMsg"></div>
+
+        <!-- Results -->
+        <div class="results-section" id="resultsSection">
+            <div class="glass-card" style="margin-top: 24px;">
+                <div class="card-title">
+                    <div class="icon" style="background: rgba(245,158,11,0.15); color: var(--accent-4);">📊</div>
+                    Predicted Mechanical Properties
+                </div>
+                <div class="formula-display" id="formulaDisplay"></div>
+                <div class="results-grid" id="resultsGrid"></div>
+            </div>
+        </div>
+
+        <footer>
+            Multi-Output Regression Framework • Deep Learning • MPEA Dataset
+        </footer>
+    </div>
+
+    <script>
+        const ALL_ELEMENTS = {{ elements | tojson }};
+        const TARGET_NAMES = {{ targets | tojson }};
+
+        const UNITS = {
+            'Hardness (HV)': 'HV',
+            'Yield Strength (MPa)': 'MPa',
+            'UTS (MPa)': 'MPa',
+            'Elongation (%)': '%',
+            'Young Modulus (GPa)': 'GPa'
+        };
+
+        const PRESETS = {
+            cantor: { Co: 1, Cr: 1, Fe: 1, Mn: 1, Ni: 1 },
+            alcocr: { Al: 1, Co: 1, Cr: 1, Fe: 1, Ni: 1 },
+            refractory: { Hf: 1, Nb: 1, Ta: 1, Ti: 1, Zr: 1 },
+            light: { Al: 1, Nb: 1, Ti: 1, V: 1 },
+            fcc: { Co: 1, Cr: 1, Fe: 1, Ni: 1 }
+        };
+
+        // Build element input grid
+        const grid = document.getElementById('elementGrid');
+        ALL_ELEMENTS.forEach(elem => {
+            const div = document.createElement('div');
+            div.className = 'element-input';
+            div.innerHTML = `
+                <label for="${elem}">${elem}</label>
+                <input type="number" id="${elem}" placeholder="0" step="any" min="0" value="">
+            `;
+            grid.appendChild(div);
+        });
+
+        function loadPreset(name) {
+            // Clear all
+            ALL_ELEMENTS.forEach(e => document.getElementById(e).value = '');
+            // Set preset values
+            const preset = PRESETS[name];
+            for (const [elem, val] of Object.entries(preset)) {
+                document.getElementById(elem).value = val;
+            }
+        }
+
+        async function predict() {
+            const btn = document.getElementById('predictBtn');
+            const errorDiv = document.getElementById('errorMsg');
+            const resultsSection = document.getElementById('resultsSection');
+
+            btn.classList.add('loading');
+            btn.textContent = '⏳ Predicting...';
+            errorDiv.classList.remove('visible');
+            resultsSection.classList.remove('visible');
+
+            // Build payload
+            const data = {};
+            ALL_ELEMENTS.forEach(elem => {
+                const val = parseFloat(document.getElementById(elem).value);
+                if (!isNaN(val) && val > 0) data[elem] = val;
+            });
+
+            data.processing = document.getElementById('processing').value;
+            data.microstructure = document.getElementById('microstructure').value;
+            data.bcc_fcc = document.getElementById('bcc_fcc').value;
+            data.grain_size = parseFloat(document.getElementById('grain_size').value) || 0;
+            data.density = parseFloat(document.getElementById('density').value) || 0;
+            data.test_temp = parseFloat(document.getElementById('test_temp').value) || 25;
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.error) {
+                    errorDiv.textContent = '❌ ' + result.error;
+                    errorDiv.classList.add('visible');
+                } else {
+                    // Show formula
+                    document.getElementById('formulaDisplay').innerHTML =
+                        `Alloy: <strong>${result.formula}</strong>`;
+
+                    // Build result cards
+                    const grid = document.getElementById('resultsGrid');
+                    grid.innerHTML = '';
+
+                    for (const [name, value] of Object.entries(result.predictions)) {
+                        const card = document.createElement('div');
+                        card.className = 'result-card';
+                        card.innerHTML = `
+                            <div class="result-label">${name}</div>
+                            <div class="result-value" style="font-size: 1.5rem;">${value}</div>
+                            <div class="result-unit">${UNITS[name] || ''}</div>
+                        `;
+                        grid.appendChild(card);
+                    }
+
+                    resultsSection.classList.add('visible');
+                }
+            } catch (err) {
+                errorDiv.textContent = '❌ Connection error: ' + err.message;
+                errorDiv.classList.add('visible');
+            }
+
+            btn.classList.remove('loading');
+            btn.textContent = '🔮 Predict Mechanical Properties';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+{
+  "hybrid": {
+    "Hardness (HV)": 0.9432,
+    "Yield Strength (MPa)": 0.9126,
+    "UTS (MPa)": 0.8151,
+    "Elongation (%)": 0.7526,
+    "Young Modulus (GPa)": 0.9869,
+    "OVERALL_AVG_R2": 0.8821
+  },
+  "dl_standalone": {
+    "Hardness (HV)": 0.9435,
+    "Yield Strength (MPa)": 0.8852,
+    "UTS (MPa)": 0.8423,
+    "Elongation (%)": 0.7944,
+    "Young Modulus (GPa)": 0.9823,
+    "OVERALL_AVG_R2": 0.8895
+  },
+  "rf_standalone": {
+    "Hardness (HV)": 0.9228,
+    "Yield Strength (MPa)": 0.8904,
+    "UTS (MPa)": 0.7697,
+    "Elongation (%)": 0.6418,
+    "Young Modulus (GPa)": 0.9869,
+    "OVERALL_AVG_R2": 0.8423
+  },
+  "admm_standalone": {
+    "Hardness (HV)": 0.9038,
+    "Yield Strength (MPa)": 0.8839,
+    "UTS (MPa)": 0.82,
+    "Elongation (%)": 0.6355,
+    "Young Modulus (GPa)": 0.9918,
+    "OVERALL_AVG_R2": 0.847
+  },
+  "xgboost": {
+    "Hardness (HV)": 0.892,
+    "Yield Strength (MPa)": 0.8067,
+    "UTS (MPa)": 0.8799,
+    "Elongation (%)": 0.6005,
+    "Young Modulus (GPa)": 0.9983,
+    "OVERALL_AVG_R2": 0.8355
+  },
+  "svr": {
+    "Hardness (HV)": 0.253,
+    "Yield Strength (MPa)": 0.2826,
+    "UTS (MPa)": 0.2874,
+    "Elongation (%)": 0.1256,
+    "Young Modulus (GPa)": 0.8341,
+    "OVERALL_AVG_R2": 0.3565
+  },
+  "rnn": {
+    "Hardness (HV)": 0.7262,
+    "Yield Strength (MPa)": 0.6402,
+    "UTS (MPa)": 0.5813,
+    "Elongation (%)": 0.534,
+    "Young Modulus (GPa)": 0.7306,
+    "OVERALL_AVG_R2": 0.6425
+  },
+  "lstm": {
+    "Hardness (HV)": 0.7552,
+    "Yield Strength (MPa)": 0.4406,
+    "UTS (MPa)": 0.584,
+    "Elongation (%)": 0.3434,
+    "Young Modulus (GPa)": 0.7192,
+    "OVERALL_AVG_R2": 0.5685
+  },
+  "gru": {
+    "Hardness (HV)": 0.651,
+    "Yield Strength (MPa)": 0.3966,
+    "UTS (MPa)": 0.405,
+    "Elongation (%)": 0.444,
+    "Young Modulus (GPa)": 0.725,
+    "OVERALL_AVG_R2": 0.5243
+  },
+  "bilstm": {
+    "Hardness (HV)": 0.4397,
+    "Yield Strength (MPa)": 0.2356,
+    "UTS (MPa)": 0.2526,
+    "Elongation (%)": 0.1782,
+    "Young Modulus (GPa)": 0.2633,
+    "OVERALL_AVG_R2": 0.2739
+  },
+  "cnn1d": {
+    "Hardness (HV)": 0.2681,
+    "Yield Strength (MPa)": 0.1198,
+    "UTS (MPa)": 0.1216,
+    "Elongation (%)": 0.1107,
+    "Young Modulus (GPa)": 0.412,
+    "OVERALL_AVG_R2": 0.2065
+  }
+}

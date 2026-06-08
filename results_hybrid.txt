@@ -1,0 +1,21 @@
+============================================================
+  HYBRID MODEL (DL + ADMM + RF) — FINAL RESULTS
+============================================================
+
+  Hardness (HV)             R²: 0.8552  MAE: 0.3340  RMSE: 0.4171
+  Yield Strength (MPa)      R²: 0.8157  MAE: 0.2958  RMSE: 0.3592
+  UTS (MPa)                 R²: 0.8252  MAE: 0.3177  RMSE: 0.3878
+  Elongation (%)            R²: 0.7313  MAE: 0.3822  RMSE: 0.5076
+  Young Modulus (GPa)       R²: 0.9751  MAE: 0.1094  RMSE: 0.1477
+
+  OVERALL AVG R²            0.8405
+
+------------------------------------------------------------
+  Component Model Comparison (R² on test set):
+------------------------------------------------------------
+  Target                      Hybrid       DL       RF     ADMM
+  Hardness (HV)               0.8552   0.8061   0.8574   0.8663
+  Yield Strength (MPa)        0.8157   0.6950   0.8082   0.8433
+  UTS (MPa)                   0.8252   0.7536   0.7066   0.7754
+  Elongation (%)              0.7313   0.6960   0.5770   0.6234
+  Young Modulus (GPa)         0.9751   0.9127   0.9930   0.9881

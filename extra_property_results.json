@@ -1,0 +1,23 @@
+{
+  "Calculated Density (g/cm\u00b3)": {
+    "RF": 0.9785,
+    "ET": 0.984,
+    "XGBoost": 0.9674,
+    "Hybrid": 0.9768,
+    "Hybrid_MAE": 0.0435
+  },
+  "Exp. Young Modulus (GPa)": {
+    "RF": 0.6942,
+    "ET": 0.6925,
+    "XGBoost": 0.6049,
+    "Hybrid": 0.6509,
+    "Hybrid_MAE": 11.9891
+  },
+  "Plastic Elongation (%)": {
+    "RF": 0.4523,
+    "ET": 0.6904,
+    "XGBoost": 0.207,
+    "Hybrid": 0.5231,
+    "Hybrid_MAE": 13.5306
+  }
+}

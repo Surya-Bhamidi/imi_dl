@@ -1,0 +1,7 @@
+{
+  "DNN (Deep Learning)": 0.14311766624450684,
+  "Random Forest": 0.7293814584659546,
+  "XGBoost": 0.6622071266174316,
+  "ADMM": 0.0,
+  "Hybrid Model (Ours)": 0.5138866124900935
+}

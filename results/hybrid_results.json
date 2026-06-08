@@ -1,0 +1,51 @@
+{
+  "hybrid_stacked": {
+    "Hardness (HV)": {
+      "R2": 0.8552,
+      "MAE": 0.334,
+      "RMSE": 0.4171
+    },
+    "Yield Strength (MPa)": {
+      "R2": 0.8157,
+      "MAE": 0.2958,
+      "RMSE": 0.3592
+    },
+    "UTS (MPa)": {
+      "R2": 0.8252,
+      "MAE": 0.3177,
+      "RMSE": 0.3878
+    },
+    "Elongation (%)": {
+      "R2": 0.7313,
+      "MAE": 0.3822,
+      "RMSE": 0.5076
+    },
+    "Young Modulus (GPa)": {
+      "R2": 0.9751,
+      "MAE": 0.1094,
+      "RMSE": 0.1477
+    },
+    "OVERALL_AVG_R2": 0.8405
+  },
+  "dl_standalone": {
+    "Hardness (HV)": 0.8061,
+    "Yield Strength (MPa)": 0.695,
+    "UTS (MPa)": 0.7536,
+    "Elongation (%)": 0.696,
+    "Young Modulus (GPa)": 0.9127
+  },
+  "rf_standalone": {
+    "Hardness (HV)": 0.8574,
+    "Yield Strength (MPa)": 0.8082,
+    "UTS (MPa)": 0.7066,
+    "Elongation (%)": 0.577,
+    "Young Modulus (GPa)": 0.993
+  },
+  "admm_standalone": {
+    "Hardness (HV)": 0.8663,
+    "Yield Strength (MPa)": 0.8433,
+    "UTS (MPa)": 0.7754,
+    "Elongation (%)": 0.6234,
+    "Young Modulus (GPa)": 0.9881
+  }
+}

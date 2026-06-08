@@ -1,0 +1,43 @@
+{
+  "Hardness (HV)": {
+    "R2": 0.9228,
+    "weights": {
+      "DL": 0.0,
+      "RF": 1.0,
+      "ADMM": 0.0
+    }
+  },
+  "Yield Strength (MPa)": {
+    "R2": 0.8904,
+    "weights": {
+      "DL": 0.0,
+      "RF": 1.0,
+      "ADMM": 0.0
+    }
+  },
+  "UTS (MPa)": {
+    "R2": 0.7697,
+    "weights": {
+      "DL": 0.0,
+      "RF": 1.0,
+      "ADMM": 0.0
+    }
+  },
+  "Elongation (%)": {
+    "R2": 0.6418,
+    "weights": {
+      "DL": 0.0,
+      "RF": 1.0,
+      "ADMM": 0.0
+    }
+  },
+  "Young Modulus (GPa)": {
+    "R2": 0.9937,
+    "weights": {
+      "DL": 0.05,
+      "RF": 0.2,
+      "ADMM": 0.75
+    }
+  },
+  "OVERALL_AVG_R2": 0.8437
+}

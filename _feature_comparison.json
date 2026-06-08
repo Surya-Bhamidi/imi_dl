@@ -1,0 +1,80 @@
+{
+  "A: Baseline (current)": {
+    "metrics": {
+      "Hardness (HV)": {
+        "R2": 0.7014,
+        "MAE": 84.53
+      },
+      "Yield Strength (MPa)": {
+        "R2": 0.7367,
+        "MAE": 213.19
+      },
+      "UTS (MPa)": {
+        "R2": 0.6168,
+        "MAE": 316.82
+      },
+      "Elongation (%)": {
+        "R2": 0.1688,
+        "MAE": 14.24
+      },
+      "Young Modulus (GPa)": {
+        "R2": 0.8102,
+        "MAE": 8.36
+      }
+    },
+    "n_features": 97,
+    "avg_r2": 0.6068
+  },
+  "B: + New Elemental Props": {
+    "metrics": {
+      "Hardness (HV)": {
+        "R2": 0.7397,
+        "MAE": 71.25
+      },
+      "Yield Strength (MPa)": {
+        "R2": 0.7747,
+        "MAE": 187.4
+      },
+      "UTS (MPa)": {
+        "R2": 0.7394,
+        "MAE": 248.18
+      },
+      "Elongation (%)": {
+        "R2": 0.3951,
+        "MAE": 12.35
+      },
+      "Young Modulus (GPa)": {
+        "R2": 0.9685,
+        "MAE": 4.91
+      }
+    },
+    "n_features": 113,
+    "avg_r2": 0.7235
+  },
+  "C: + New Props + CSV Cols": {
+    "metrics": {
+      "Hardness (HV)": {
+        "R2": 0.2166,
+        "MAE": 151.59
+      },
+      "Yield Strength (MPa)": {
+        "R2": 0.3421,
+        "MAE": 373.23
+      },
+      "UTS (MPa)": {
+        "R2": 0.2944,
+        "MAE": 468.64
+      },
+      "Elongation (%)": {
+        "R2": -0.2638,
+        "MAE": 19.67
+      },
+      "Young Modulus (GPa)": {
+        "R2": 0.5073,
+        "MAE": 28.36
+      }
+    },
+    "n_features": 121,
+    "avg_r2": 0.2193
+  }
+}
