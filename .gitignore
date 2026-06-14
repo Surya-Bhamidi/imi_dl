@@ -1,9 +1,47 @@
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyo
+
+# Model weights & scalers (large binary files)
 *.pkl
 *.pth
 *.h5
 saved_models/
+
+# Environment
 .env
+.env.*
 .ipynb_checkpoints/
+
+# ── Research / Paper material ────────────────────────────────────────────────
+paper.tex
+
+# ── Large datasets (raw/training data - not for public repo) ─────────────────
+train.csv
+magnetic_data.csv
+magnetic_clean.csv
+MPEA_dataset.csv
+MPEA_dataset_clean.csv
+pmo.csv
+pmo_formatted.csv
+matbench_expt_gap_dataset.csv
+matbench_glass_dataset.csv
+matbench_steels_dataset.csv
+High Entropy Alloy Properties.csv
+
+# ── Generated plots & images (reproducible from code) ────────────────────────
+Demo_Plots/
+Final_Plots/
+Presentation_Plots/
+Updated_Plots/
+*.png
+
+# ── Raw results (large / auto-generated) ─────────────────────────────────────
+results/training_history.json
+results/training_history_rf.json
+
+# OS
+.DS_Store
+Thumbs.db
